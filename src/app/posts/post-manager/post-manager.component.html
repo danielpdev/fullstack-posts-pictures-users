@@ -1,0 +1,18 @@
+<section style="display: inline">
+    <b> {{'SORT' | translate }} </b>
+<app-sort-post [sortTypes]="dateSort" [defaultValue]="{name: 'Date', value: null}" (selectionChanged)="sortingChanged($event)" [name]="'BY_DATE' | translate"></app-sort-post>
+<b> {{'AND' | translate}} </b>
+<app-sort-post [sortTypes]="locationSort" [defaultValue]="{name: 'Location', value: null}" (selectionChanged)="sortingChanged($event)" [name]="'BY_LOCATION' | translate"></app-sort-post>
+</section>
+<section >
+    <app-post-search (searchChanged)="onSearchChanged($event)"></app-post-search>
+</section>
+<mat-spinner class="spinner" *ngIf="isLoading"></mat-spinner>
+
+<app-post-list
+ (pageChanged)="onChangedPage($event)"
+ (delete)="onDelete($event)" 
+ [posts]="posts" 
+ [totalPosts]="totalPosts"
+ [userIsAuthenticated]="userIsAuthenticated"
+ [userId]="userId"></app-post-list>

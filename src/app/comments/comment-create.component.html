@@ -1,0 +1,24 @@
+<mat-card class="mat-card">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <form [formGroup]="form"  (submit)="onSaveComment()" *ngIf="!isLoading">
+      <mat-form-field>
+        <input matInput type="text" formControlName="name" [placeholder]="'NAME' | translate">
+        <mat-error *ngIf="form.get('name').invalid">{{'COMMENT_NAME_ERROR' | translate }}</mat-error>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput type="text" formControlName="email" [placeholder]="'EMAIL' | translate">
+        <mat-error *ngIf="form.get('email').invalid">{{'EMAIL_ERROR' | translate }}</mat-error>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <textarea matInput rows="4" formControlName="content" placeholder="Content"></textarea>
+        <mat-error *ngIf="form.get('content').invalid">{{ 'COMMENT_CONTENT_ERROR' | translate }}</mat-error>
+      </mat-form-field>
+      <br>
+      <button [disabled]="!userIsAuthenticated" mat-raised-button color="accent" type="submit">{{'POST_COMMENT' | translate }}</button>
+      <mat-error *ngIf="!userIsAuthenticated">{{'POST_COMMENTS_ERROR' | translate }}</mat-error>
+
+    </form>
+  </mat-card>
+  

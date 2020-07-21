@@ -1,0 +1,48 @@
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form [formGroup]="form" (submit)="onSavePost()" *ngIf="!isLoading">
+    <div>
+      <button mat-stroked-button type="button"  (click)="filePicker.click()">{{ 'PICK_IMAGE' | translate }}</button>
+      <input type="file"  #filePicker (change)="onImagePicked($event)">
+    </div>
+    <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
+      <img [src]="imagePreview">
+    </div>
+    <mat-error *ngIf="form.get('image').invalid">{{'PIC_ERROR' | translate}} </mat-error>
+    <mat-form-field>
+      <textarea matInput rows="4" formControlName="description" placeholder="Post description"></textarea>
+      <mat-error *ngIf="form.get('description').invalid">{{'DESCRIPTION_ERROR' | translate}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="tag-list">
+      <mat-chip-list #chipList aria-label="'TAGS' | translate">
+        <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
+                 [removable]="removable" (removed)="remove(tag)">
+          {{tag.name}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input [placeholder]="'NEW_TAGS' | translate"
+               [matChipInputFor]="chipList"
+               formControlName="tags"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="addOnBlur"
+               (matChipInputTokenEnd)="addTag($event)">
+         <mat-error *ngIf="form.get('tags').invalid">{{'TAG_ERROR' | translate}}</mat-error>
+
+      </mat-chip-list>
+
+    </mat-form-field>
+    <mat-form-field class="date-field">
+      <input matInput formControlName="dateTaken" [matDatepicker]="picker" placeholder="Choose a date">
+      <mat-error *ngIf="form.get('dateTaken').invalid">{{'DATE_ERROR' | translate }}</mat-error>
+
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+      <mat-form-field class="text-field">
+      <input matInput formControlName="location" [placeholder]="'LOCATION' | translate">
+      <mat-error *ngIf="form.get('location').invalid">{{'LOCATION_ERROR' | translate }}</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" type="submit">{{mode === 'create' ? ('SAVE_POST' | translate) : ('UPDATE_POST' | translate)}}</button>
+  </form>
+</mat-card>

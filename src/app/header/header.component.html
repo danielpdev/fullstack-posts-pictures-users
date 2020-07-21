@@ -1,0 +1,25 @@
+<mat-toolbar color="primary">
+  <span>
+    <a class="app-name" routerLink="/">{{ 'APP_TITLE' | translate }}</a>
+  </span>
+  <span class="spacer"></span>
+  
+  <mat-button-toggle-group class="language" #group="matButtonToggleGroup" name="fontStyle" aria-label="Font Style" value="en" (change)="onLanguageChanged(group.value)">
+    <mat-button-toggle value="en">EN</mat-button-toggle>
+    <mat-button-toggle value="ro">RO</mat-button-toggle>
+  </mat-button-toggle-group>
+  <ul>
+    <li *ngIf="userIsAuthenticated">
+      <a mat-button routerLink="/create" routerLinkActive="mat-accent">{{ 'NEW_POST' | translate }}</a>
+    </li>
+    <li *ngIf="!userIsAuthenticated">
+      <a mat-button routerLink="/auth/login" routerLinkActive="mat-accent">{{ 'LOGIN' | translate }}</a>
+    </li>
+    <li *ngIf="!userIsAuthenticated">
+      <a mat-button routerLink="/auth/signup" routerLinkActive="mat-accent">{{ 'SIGNUP' | translate }}</a>
+    </li>
+    <li *ngIf="userIsAuthenticated">
+      <button mat-button (click)="onLogout()">{{'LOGOUT' | translate }}</button>
+    </li>
+  </ul>
+</mat-toolbar>

@@ -1,0 +1,43 @@
+<section *ngIf="post">  
+  <mat-card class="example-card" >
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <mat-card-header>
+      <mat-card-title>{{ 'LOCATION' | translate }} - {{post.location}}</mat-card-title>
+      <mat-card-subtitle>
+        <p>
+        {{ 'DATE_TAKEN' | translate }} - {{post.dateTaken | date}}
+        </p>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{post.imagePath}}" alt="Some photo">
+    <mat-card-content>
+      <p>
+      {{ 'DESCRIPTION' | translate }}  {{post.description}}
+      </p>
+    </mat-card-content>
+       <mat-action-row *ngIf="userIsAuthenticated && userId === post.creator">
+        <a mat-button color="primary" [routerLink]="['/edit', post.id]">{{'EDIT' | translate }}</a>
+        <button mat-button color="warn" (click)="onDelete(post.id)">{{'DELETE' | translate }}</button>
+      </mat-action-row>
+  </mat-card>
+   <h4>
+      {{ 'RATING_OVERALL' | translate }} {{(post.ratings?.rate || 0) | number:'1.1-1'}} {{'FROM' | translate}} {{post.ratings?.no}} {{'RATINGS' | translate}}
+      <br>
+      <mat-star-rating [disabled]="!userIsAuthenticated" [rating]="post.ratings?.userRating?.stars" (ratingUpdated)="onRatingUpdated($event)"></mat-star-rating>
+    </h4>
+</section>
+<section *ngIf="post && !isLoading">
+ 
+  <h3>{{'COMMENTS' | translate}}</h3>
+<mat-accordion  multi="true" *ngIf="post && post.comments.length > 0 && !isLoading">
+  <mat-expansion-panel *ngFor="let comment of post.comments">
+    <mat-expansion-panel-header>
+      <p>{{'COMMENT_EMAIL' | translate }} - {{ comment.email }} </p>
+    </mat-expansion-panel-header>
+    <p>{{'COMMENT_CONTENT' | translate }} - {{ comment.content }}</p>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<h3>{{'POST_A_COMMENT' | translate }}</h3>
+<app-comment-create (saveComment)="onSavedComment($event)"></app-comment-create>
+</section>
